@@ -31,15 +31,10 @@ class MonthlyWorkRecord(SQLModel, table=True):
                                    decimal_places=2)
     night_hours: Decimal = Field(max_digits=10,
                                    decimal_places=2)
-    monthly_bonus: Decimal = Field(max_digits=10,
-                                   decimal_places=2)
-    overtime_50_hours: Decimal = Field(max_digits=10,
-                                   decimal_places=2)
-    overtime_100_hours: Decimal = Field(max_digits=10,
-                                   decimal_places=2)
-    total_gross: Decimal = Field(max_digits=10,
-                                       decimal_places=2)
-    total_net: Decimal = Field(max_digits=10,
-                                       decimal_places=2)
+    monthly_bonus: Decimal = Field(default=Decimal("0"), max_digits=10, decimal_places=2)
+    overtime_50_hours: Decimal = Field(max_digits=10, decimal_places=2)
+    overtime_100_hours: Decimal = Field(max_digits=10, decimal_places=2)
+    total_gross: Decimal = Field(max_digits=10, decimal_places=2)
+    total_net: Decimal = Field(max_digits=10, decimal_places=2)
 
 
