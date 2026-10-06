@@ -8,7 +8,7 @@ from calculator import analyze_shift, calculate_income, calculate_overtime_hours
 
 
 
-def generate_monthly_summary(employee_id: int, year: int, month: int):
+def generate_monthly_summary(employee_id: int, year: int, month: int, monthly_bonus: Decimal = Decimal("0.00")):
     with Session(engine) as session:
         statement_contract = select(Contract).where(Contract.employee_id == employee_id)
         contract = session.exec(statement_contract).first()
@@ -46,7 +46,7 @@ def generate_monthly_summary(employee_id: int, year: int, month: int):
                 shifts_total["overtime_hours_50"] += overtime["overtime_hours_50"]
                 shifts_total["overtime_hours_100"] += overtime["overtime_hours_100"]
             shifts_total["total_hours"] = shifts_total["day_hours"] + shifts_total["night_hours"]
-            income = calculate_income(shifts_total, contract.hourly_rate)
+            income = calculate_income(shifts_total, contract.hourly_rate, monthly_bonus)
 
             monthly_record = MonthlyWorkRecord(
                 employee_id = employee_id,
@@ -54,7 +54,7 @@ def generate_monthly_summary(employee_id: int, year: int, month: int):
                 month = month,
                 regular_hours = shifts_total["total_hours"],
                 night_hours = shifts_total["night_hours"],
-                monthly_bonus = Decimal("0"),
+                monthly_bonus = monthly_bonus,
                 overtime_50_hours = shifts_total["overtime_hours_50"],
                 overtime_100_hours = shifts_total["overtime_hours_100"],
                 total_gross = income["sum_gross"],
@@ -62,8 +62,24 @@ def generate_monthly_summary(employee_id: int, year: int, month: int):
                 )
             session.add(monthly_record)
             session.commit()
-            print(f"The report was successfully saved in database for employee:{employee_id}, year:{year}, month:{month}") 
+            print(f"The report was successfully saved in database for employee:{employee_id}, year:{year}, month:{month}")
+            
+            session.refresh(monthly_record)
+            return monthly_record
 
+def get_existing_summary(employee_id: int, year: int, month: int):
+
+    with Session(engine) as session:
+        statement = select(MonthlyWorkRecord).where(
+            MonthlyWorkRecord.employee_id == employee_id,
+            MonthlyWorkRecord.year == year,
+            MonthlyWorkRecord.month == month
+            )
+
+        result = session.exec(statement).first()
+        return result
+
+        
 if __name__ == "__main__":
-        monthly_record = generate_monthly_summary(employee_id=2, year=2026, month=9)
+        monthly_record = generate_monthly_summary(employee_id=1, year=2026, month=9, monthly_bonus=Decimal("270.00"))
         print(monthly_record)

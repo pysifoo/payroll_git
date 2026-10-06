@@ -36,5 +36,3 @@ class MonthlyWorkRecord(SQLModel, table=True):
     overtime_100_hours: Decimal = Field(max_digits=10, decimal_places=2)
     total_gross: Decimal = Field(max_digits=10, decimal_places=2)
     total_net: Decimal = Field(max_digits=10, decimal_places=2)
-
-

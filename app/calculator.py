@@ -60,7 +60,7 @@ def calculate_overtime_hours(shift_data: dict) -> dict:
     }
 
 
-def calculate_income(shift_data: dict, hourly_rate: Decimal) -> dict:
+def calculate_income(shift_data: dict, hourly_rate: Decimal, monthly_bonus: Decimal = Decimal("0.00")) -> dict:
     """
     Receive dictionary of analyze_shift and hour rate.
 
@@ -73,11 +73,11 @@ def calculate_income(shift_data: dict, hourly_rate: Decimal) -> dict:
 
     sum_shift_gross = base + night_hours_base + extra_hours
     sum_shift_net = sum_shift_gross * Decimal("0.77")
-    sum_shift_gross = sum_shift_gross.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    sum_shift_net = sum_shift_net.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    sum_gross = sum_shift_gross.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP) + monthly_bonus
+    sum_net = sum_shift_net.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     return {
-        "sum_gross": sum_shift_gross,
-        "sum_net": sum_shift_net,
+        "sum_gross": sum_gross,
+        "sum_net": sum_net,
     }
 
 if __name__ == "__main__":
