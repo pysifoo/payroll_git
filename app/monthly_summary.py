@@ -2,9 +2,9 @@ from sqlmodel import Session, select
 from datetime import datetime
 from decimal import Decimal
 
-from database import engine
-from models import Employee, Contract, WorkShift, MonthlyWorkRecord
-from calculator import analyze_shift, calculate_income, calculate_overtime_hours
+from app.database import engine
+from app.models import Employee, Contract, WorkShift, MonthlyWorkRecord
+from app.calculator import analyze_shift, calculate_income, calculate_overtime_hours
 
 
 

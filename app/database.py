@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine, Session
-from models import Employee, Contract, WorkShift, MonthlyWorkRecord
+from app.models import Employee, Contract, WorkShift, MonthlyWorkRecord
 
 load_dotenv()
 
@@ -11,9 +11,7 @@ host = os.getenv("POSTGRES_HOST")
 port = os.getenv("POSTGRES_PORT")
 postgres_db = os.getenv("POSTGRES_DB")
 
-DATABASE_URL = (f"postgresql+psycopg://{user}:{password}@"
-                f"{host}:{port}/{postgres_db}")
-
+DATABASE_URL = f"postgresql+psycopg://{user}:{password}@{host}:{port}/{postgres_db}"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
