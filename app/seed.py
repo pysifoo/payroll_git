@@ -2,8 +2,8 @@ from sqlmodel import Session
 from datetime import datetime
 from decimal import Decimal
 
-from database import engine, create_db_and_tables
-from models import Employee, Contract, WorkShift
+from app.database import engine, create_db_and_tables
+from app.models import Employee, Contract, WorkShift
 
 
 def seed_data():
